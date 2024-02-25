@@ -3,18 +3,22 @@ project:
   output-dir: docs
 
 website:
-  title: "ban300_f24.github.io"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
-
+  title: "BAN 300 - F24"
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - syllabus.qmd
+      - schedule.qmd
+      - bookmarks.qmd
+      - section: "Labs"
+        contents:
+          - href: ./labs/lab01.qmd
+            text: Lab 1
+      - section: "Assignments"
+      - section: "Training Projects"
 format:
   html:
-    theme: cosmo
+    theme: sandstone
     css: styles.css
     toc: true
-
-editor: visual
-

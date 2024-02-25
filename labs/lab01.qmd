@@ -1,0 +1,167 @@
+---
+title: "Lab 1"
+number-sections: true
+format: 
+  html: default
+  pdf: default
+---
+
+## Overview
+
+::: callout-note
+To complete this lab, you will need:
+
+-   access to the shared posit.cloud space for this course (link in Brightspace)
+-   a quarto.pub account (free)
+-   GitHub Copilot account approved and enabled in posit.cloud
+:::
+
+Go to the shared posit.cloud workspace for this class and open the `Labs` project. Open the `lab01.qmd` file and complete the exercises. Below is an annotated guide to assist you. There is also a video in the Brightspace Todo section for this module.
+
+We will be using the `gapminder` data for this lab so let's start by loading the tidyverse family of packages and gapminder. Since this is more of a report, we'll also be using the `message: false` option to suppress the output message from loading `tidyverse`.
+
+```{r}
+#| message: false
+#| echo: fenced
+library(tidyverse)
+library(gapminder)
+```
+
+## Exercises
+
+There are seven exercises in this lab. Grading is shown in @sec-grading at the end of the document.
+
+### Exercise 1
+
+::: exercise
+Using `ggplot` plot the changes in life expectancy over time for the US, Japan, and Russia. Use a line plot. The geom is `geom_line()`
+:::
+
+First, let's `glimpse()` the data to remind us what it looks like.
+
+```{r}
+glimpse(gapminder)
+```
+
+Next, let's check the correct spelling of each country to see how we should reference them, remember that country names may have changed over time (e.g., USSR -\> Russia and other countries). We can use the `pull()` function so we don't get pages of output for a single column and can easily see the names.
+
+```{r}
+gapminder |> 
+  distinct(country) |> 
+  pull()
+```
+
+It looks like Russia isn't included in the dataset. Instead of Russia, we'll examine Bulgaria, Japan, United States. We'll create a new tibble called `three_countries` to store our restricted data. Since we are looking at life expectancy changes over time, the three columns we'll need are `country`, `year`, and `lifeExp`.
+
+```{r}
+three_countries <-  gapminder |> 
+  select(country, year, lifeExp) |> 
+  filter(country %in% c("Bulgaria", "Japan", "United States"))
+```
+
+Now we can use `ggplot` to create our chart.
+
+```{r}
+three_countries |> 
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_line(aes(color = country))
+```
+
+### Exercise 2
+
+::: exercise
+Modify the code below to add a title to the plot, create a more meaningful y-axis label, and use `theme_minimal()` to change the theme of the plot.
+:::
+
+Refer to the [Getting Started](https://jsuleiman.com/) chapter, which is when we first labeled the axes and added a title to plots.
+
+```{r}
+three_countries |> 
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_line(aes(color = country))
+```
+
+### Exercise 3
+
+::: exercise
+In the empty code chunk below, create the same graphic using three new countries of your choosing. Set the chunk option to render the plot, but not the code.
+:::
+
+```{r}
+# insert code here
+```
+
+### Exercise 4
+
+::: exercise
+Try to recreate the plot **and the linked reference to it** shown below.
+
+```{r}
+#| label: fig-three_life_exp
+#| fig-cap: "Life expectancy trend - Bulgaria, Japan, United States"
+#| echo: false
+three_countries |> 
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_line(aes(color = country)) +
+  labs(
+    title = "Life Expectancy Over Time",
+    x = "Year",
+    y = "Life Expectancy",
+    color = "Country"
+  ) +
+  theme_minimal()
+```
+
+You can see in @fig-three_life_exp that Bulgaria's life expectancy increase slowed starting in the mid 1960s.
+:::
+
+::: callout-tip
+## Hints
+
+-   use the chunk option `fig-cap: "Write your caption here"` to replicate the caption towards the bottom of the plot.
+
+-   use the chunk option `label: fig-unique_label_name` to make a label that becomes cross-referenceable. Ideally, `unique_label_name` should be something unique and meaningful like `three_country_life_exp`. The `fig-` prefix is required to properly cross reference figures.
+
+-   After the code chunk with the label has been run or rendered, in the visual editor, you should be able to select Insert -\> Cross Reference to place it in the narrative text. It will default as link to "Figure 1" which is the first labeled figure in the document.
+:::
+
+```{r}
+# insert code here
+```
+
+### Exercise 5
+
+::: exercise
+Copilot doesn't suggest completions when in Visual mode.
+
+Insert a code chunk below using **Insert -\> Exectuable Cell -\> R** in the visual editor, then switch to Source mode.
+
+While in source mode, type the following comment line: `# Create a plot of life expectancy over time for the United States and Portugal`.
+
+In the narrative below the plot, describe how well Copilot did.
+:::
+
+### Exercise 6
+
+::: exercise
+In the YAML section at the top of the document, replace the author's name with your own.
+:::
+
+### Exercise 7
+
+::: exercise
+Publish your document to quarto.pub and copy/paste the link to the Lab 1 assignment in Brightspace.
+:::
+
+## Grading {#sec-grading}
+
+| Exercise   | Points |
+|------------|--------|
+| Exercise 1 | 10     |
+| Exercise 2 | 10     |
+| Exercise 3 | 10     |
+| Exercise 4 | 10     |
+| Exercise 5 | 10     |
+| Exercise 6 | 10     |
+| Exercise 7 | 40     |
+| **Total**  | 100    |
